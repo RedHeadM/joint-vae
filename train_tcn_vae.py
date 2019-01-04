@@ -129,7 +129,7 @@ if __name__ == '__main__':
     latent_spec = {'cont': 128,}
                # 'disc': [10]}
 
-    model = VAE(latent_spec=latent_spec, img_size=(3, IMAGE_SIZE[0], IMAGE_SIZE[0]))
+    model = VAE(latent_spec=latent_spec, img_size=(3, IMAGE_SIZE[0], IMAGE_SIZE[0]),use_cuda=use_cuda)
     print(model)
 
     optimizer = optim.Adam(model.parameters(), lr=5e-4)
@@ -147,7 +147,7 @@ if __name__ == '__main__':
     # Build a trainer
     trainer = Trainer(model, optimizer,
                       cont_capacity=cont_capacity,
-                      disc_capacity=disc_capacity)
+                      disc_capacity=disc_capacity,use_cuda=use_cuda)
 
 
 
