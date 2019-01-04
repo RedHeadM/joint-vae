@@ -69,10 +69,6 @@ def get_dataloader_train(dir_vids, num_views, batch_size, ):
         transforms.Resize(IMAGE_SIZE[0]),  # TODO reize here Resize()
         # transforms.RandomResizedCrop(IMAGE_SIZE[0], scale=(0.9, 1.0)),
         transforms.RandomHorizontalFlip(),
-        transforms.ColorJitter(brightness=0.3,
-                               contrast=0.3,
-                               # hue=0.1,
-                               saturation=0.3),
         transforms.ToTensor(),
         # normalize
     ])
