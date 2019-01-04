@@ -128,7 +128,9 @@ class Trainer():
         epoch_loss = 0.
         print_every_loss = 0.  # Keeps track of loss to print every
                                # self.print_loss_every
-        for batch_idx, (data, label) in enumerate(data_loader):
+        key_views = ["frames views {}".format(i) for i in range(2)]
+        for batch_idx, (sample_batched) in enumerate(data_loader):
+            data = torch.cat([sample_batched[key_views[0]], sample_batched[key_views[1]]])
             iter_loss = self._train_iteration(data)
             epoch_loss += iter_loss
             print_every_loss += iter_loss
@@ -139,7 +141,7 @@ class Trainer():
                 else:
                     mean_loss = print_every_loss / self.print_loss_every
                 print('{}/{}\tLoss: {:.3f}'.format(batch_idx * len(data),
-                                                  len(data_loader.dataset),
+                                                  len(data_loader),
                                                   self.model.num_pixels * mean_loss))
                 print_every_loss = 0.
         # Return mean epoch loss
@@ -209,6 +211,7 @@ class Trainer():
             cont_capacity_loss = cont_gamma * torch.abs(cont_cap_current - kl_cont_loss)
 
         if self.model.is_discrete:
+            assert False
             # Calculate KL divergence
             kl_disc_loss = self._kl_multiple_discrete_loss(latent_dist['disc'])
             # Linearly increase capacity of discrete channels

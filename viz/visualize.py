@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from latent_traversals import LatentTraverser
+from .latent_traversals import LatentTraverser
 from scipy import stats
 from torch.autograd import Variable
 from torchvision.utils import make_grid, save_image
