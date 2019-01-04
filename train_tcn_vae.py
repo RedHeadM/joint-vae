@@ -30,7 +30,7 @@ from torchtcn.val.embedding_visualization import visualize_embeddings
 from torchvision import transforms
 from torchvision.utils import save_image
 
-IMAGE_SIZE = (32, 32)
+IMAGE_SIZE = (64, 64)
 from jointvae.models import VAE
 '''
 usage:
