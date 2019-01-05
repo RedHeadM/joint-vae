@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from torch.nn import functional as F
 from torchvision.utils import make_grid
-
+from torchvision.utils import save_image
 EPS = 1e-12
 
 
@@ -130,6 +130,7 @@ class Trainer():
                                # self.print_loss_every
         key_views = ["frames views {}".format(i) for i in range(2)]
         for batch_idx, (sample_batched) in enumerate(data_loader):
+            self.batch_idx=batch_idx
             data = torch.cat([sample_batched[key_views[0]], sample_batched[key_views[1]]])
             iter_loss = self._train_iteration(data)
             epoch_loss += iter_loss
@@ -159,13 +160,15 @@ class Trainer():
         self.num_steps += 1
         if self.use_cuda:
             data = data.cuda()
-
         self.optimizer.zero_grad()
         recon_batch, latent_dist = self.model(data)
         loss = self._loss_function(data, recon_batch, latent_dist)
+
         loss.backward()
         self.optimizer.step()
-
+        if self.batch_idx % self.print_loss_every == 0:
+            save_image(data,"data.png")
+            save_image(recon_batch,"recon_batch.png")
         train_loss = loss.item()
         return train_loss
 
@@ -211,7 +214,6 @@ class Trainer():
             cont_capacity_loss = cont_gamma * torch.abs(cont_cap_current - kl_cont_loss)
 
         if self.model.is_discrete:
-            assert False
             # Calculate KL divergence
             kl_disc_loss = self._kl_multiple_discrete_loss(latent_dist['disc'])
             # Linearly increase capacity of discrete channels

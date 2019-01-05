@@ -30,7 +30,7 @@ from torchtcn.val.embedding_visualization import visualize_embeddings
 from torchvision import transforms
 from torchvision.utils import save_image
 
-IMAGE_SIZE = (32, 32)
+IMAGE_SIZE = (64, 64)
 from jointvae.models import VAE
 '''
 usage:
@@ -79,7 +79,6 @@ def get_dataloader_train(dir_vids, num_views, batch_size, ):
 
     sampler = None
     shuffle = True
-    shuffle = False
     # only one view pair in batch
     # sim_frames = 5
     transformed_dataset_train = DoubleViewPairDataset(vid_dir=dir_vids,
@@ -121,13 +120,14 @@ if __name__ == '__main__':
         torch.cuda.seed()
 
     from jointvae.models import VAE
-
+    from utils.dataloaders import get_mnist_dataloaders
+    # dataloader_train, test_loader = get_mnist_dataloaders(batch_size=64)
     dataloader_train = get_dataloader_train(args.train_directory, args.num_views,
                                             args.batch_size, )
 # Latent distribution will be joint distribution of 10 gaussian normal distributions
 # and one 10 dimensional Gumbel Softmax distribution
-    latent_spec = {'cont': 128,}
-               # 'disc': [10]}
+    latent_spec = {'cont': 32,
+                'disc': [10]}
 
     model = VAE(latent_spec=latent_spec, img_size=(3, IMAGE_SIZE[0], IMAGE_SIZE[0]),use_cuda=use_cuda)
     print(model)

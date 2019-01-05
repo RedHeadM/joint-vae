@@ -1,6 +1,6 @@
 import glob
 import numpy as np
-from skimage.io import imread
+# from skimage.io import imread
 from torch.utils.data import Dataset, DataLoader
 from torchvision import datasets, transforms
 
